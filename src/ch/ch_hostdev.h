@@ -22,3 +22,60 @@
 
 #include "ch_conf.h"
 #include "domain_conf.h"
+
+bool
+chHostdevHostSupportsPassthroughVFIO(void);
+
+bool
+chHostdevNeedsVFIO(const virDomainHostdevDef *hostdev);
+
+int
+chHostdevPrepareNVMeDisks(virCHDriverPtr driver,
+                          const char *name,
+                          virDomainDiskDefPtr *disks,
+                          size_t ndisks);
+
+int
+chHostdevPreparePCIDevices(virCHDriverPtr driver,
+                           const char *name,
+                           const unsigned char *uuid,
+                           virDomainHostdevDefPtr *hostdevs,
+                           int nhostdevs,
+                           unsigned int flags);
+
+int
+chHostdevPrepareUSBDevices(virCHDriverPtr driver,
+                           const char *name,
+                           virDomainHostdevDefPtr *hostdevs,
+                           int nhostdevs,
+                           unsigned int flags);
+
+
+int
+chHostdevPrepareUSBDevices(virCHDriverPtr driver,
+                           const char *name,
+                           virDomainHostdevDefPtr *hostdevs,
+                           int nhostdevs,
+                           unsigned int flags);
+
+int
+chHostdevPrepareSCSIDevices(virCHDriverPtr driver,
+                            const char *name,
+                            virDomainHostdevDefPtr *hostdevs,
+                            int nhostdevs);
+
+int
+chHostdevPrepareSCSIVHostDevices(virCHDriverPtr driver,
+                                 const char *name,
+                                 virDomainHostdevDefPtr *hostdevs,
+                                 int nhostdevs);
+
+int
+chHostdevPrepareMediatedDevices(virCHDriverPtr driver,
+                                const char *name,
+                                virDomainHostdevDefPtr *hostdevs,
+                                int nhostdevs);
+int
+chHostdevPrepareDomainDevices(virCHDriverPtr driver,
+                              virDomainDefPtr def,
+                              unsigned int flags);
