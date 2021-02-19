@@ -245,3 +245,114 @@ chHostdevPrepareDomainDevices(virCHDriverPtr driver,
     return 0;
 }
 
+void
+chHostdevReAttachOneNVMeDisk(virCHDriverPtr driver,
+                             const char *name,
+                             virStorageSourcePtr src)
+{
+    virHostdevReAttachOneNVMeDevice(driver->hostdevMgr,
+                                    CH_DRIVER_NAME,
+                                    name,
+                                    src);
+}
+
+void
+chHostdevReAttachNVMeDisks(virCHDriverPtr driver,
+                           const char *name,
+                           virDomainDiskDefPtr *disks,
+                           size_t ndisks)
+{
+    virHostdevReAttachNVMeDevices(driver->hostdevMgr,
+                                  CH_DRIVER_NAME,
+                                  name, disks, ndisks);
+}
+
+void
+chHostdevReAttachPCIDevices(virCHDriverPtr driver,
+                            const char *name,
+                            virDomainHostdevDefPtr *hostdevs,
+                            int nhostdevs)
+{
+    virCHDriverConfigPtr cfg = virCHDriverGetConfig(driver);
+    const char *oldStateDir = cfg->stateDir;
+    virHostdevManagerPtr hostdev_mgr = driver->hostdevMgr;
+
+    virHostdevReAttachPCIDevices(hostdev_mgr, CH_DRIVER_NAME, name,
+                                 hostdevs, nhostdevs, oldStateDir);
+
+    virObjectUnref(cfg);
+}
+
+void
+chHostdevReAttachUSBDevices(virCHDriverPtr driver,
+                            const char *name,
+                            virDomainHostdevDefPtr *hostdevs,
+                            int nhostdevs)
+{
+    virHostdevManagerPtr hostdev_mgr = driver->hostdevMgr;
+
+    virHostdevReAttachUSBDevices(hostdev_mgr, CH_DRIVER_NAME,
+                                 name, hostdevs, nhostdevs);
+}
+
+void
+chHostdevReAttachSCSIDevices(virCHDriverPtr driver,
+                             const char *name,
+                             virDomainHostdevDefPtr *hostdevs,
+                             int nhostdevs)
+{
+    virHostdevManagerPtr hostdev_mgr = driver->hostdevMgr;
+
+    virHostdevReAttachSCSIDevices(hostdev_mgr, CH_DRIVER_NAME,
+                                  name, hostdevs, nhostdevs);
+}
+
+void
+chHostdevReAttachSCSIVHostDevices(virCHDriverPtr driver,
+                                    const char *name,
+                                    virDomainHostdevDefPtr *hostdevs,
+                                    int nhostdevs)
+{
+    virHostdevManagerPtr hostdev_mgr = driver->hostdevMgr;
+
+    virHostdevReAttachSCSIVHostDevices(hostdev_mgr, CH_DRIVER_NAME,
+                                       name, hostdevs, nhostdevs);
+}
+
+void
+chHostdevReAttachMediatedDevices(virCHDriverPtr driver,
+                                 const char *name,
+                                 virDomainHostdevDefPtr *hostdevs,
+                                 int nhostdevs)
+{
+    virHostdevManagerPtr hostdev_mgr = driver->hostdevMgr;
+
+    virHostdevReAttachMediatedDevices(hostdev_mgr, CH_DRIVER_NAME,
+                                      name, hostdevs, nhostdevs);
+}
+
+void
+chHostdevReAttachDomainDevices(virCHDriverPtr driver,
+                               virDomainDefPtr def)
+{
+    if (!def->nhostdevs && !def->ndisks)
+        return;
+
+    chHostdevReAttachNVMeDisks(driver, def->name, def->disks,
+                               def->ndisks);
+
+    chHostdevReAttachPCIDevices(driver, def->name, def->hostdevs,
+                                def->nhostdevs);
+
+    chHostdevReAttachUSBDevices(driver, def->name, def->hostdevs,
+                                def->nhostdevs);
+
+    chHostdevReAttachSCSIDevices(driver, def->name, def->hostdevs,
+                                 def->nhostdevs);
+
+    chHostdevReAttachSCSIVHostDevices(driver, def->name, def->hostdevs,
+                                      def->nhostdevs);
+
+    chHostdevReAttachMediatedDevices(driver, def->name, def->hostdevs,
+                                     def->nhostdevs);
+}

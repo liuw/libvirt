@@ -79,3 +79,48 @@ int
 chHostdevPrepareDomainDevices(virCHDriverPtr driver,
                               virDomainDefPtr def,
                               unsigned int flags);
+
+void
+chHostdevReAttachOneNVMeDisk(virCHDriverPtr driver,
+                             const char *name,
+                             virStorageSourcePtr src);
+
+void
+chHostdevReAttachNVMeDisks(virCHDriverPtr driver,
+                           const char *name,
+                           virDomainDiskDefPtr *disks,
+                           size_t ndisks);
+
+void
+chHostdevReAttachPCIDevices(virCHDriverPtr driver,
+                            const char *name,
+                            virDomainHostdevDefPtr *hostdevs,
+                            int nhostdevs);
+
+void
+chHostdevReAttachUSBDevices(virCHDriverPtr driver,
+                            const char *name,
+                            virDomainHostdevDefPtr *hostdevs,
+                            int nhostdevs);
+
+void
+chHostdevReAttachSCSIDevices(virCHDriverPtr driver,
+                             const char *name,
+                             virDomainHostdevDefPtr *hostdevs,
+                             int nhostdevs);
+
+void
+chHostdevReAttachSCSIVHostDevices(virCHDriverPtr driver,
+                                    const char *name,
+                                    virDomainHostdevDefPtr *hostdevs,
+                                    int nhostdevs);
+
+void
+chHostdevReAttachMediatedDevices(virCHDriverPtr driver,
+                                 const char *name,
+                                 virDomainHostdevDefPtr *hostdevs,
+                                 int nhostdevs);
+
+void
+chHostdevReAttachDomainDevices(virCHDriverPtr driver,
+                               virDomainDefPtr def);
